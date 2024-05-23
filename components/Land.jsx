@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +9,8 @@ export default function Land() {
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState("");
   const [notification, setNotification] = useState(false);
+
+  const passRef = useRef(null);
 
   const generatePassword = useCallback(() => {
     let pass = "";
@@ -25,6 +27,7 @@ export default function Land() {
 
   const copyPasswordToClipboard = () => {
     window.navigator.clipboard.writeText(password);
+    passRef.current?.select();
     setNotification(true);
     setTimeout(() => {
       setNotification(false);
@@ -38,12 +41,12 @@ export default function Land() {
     <div className="flex flex-column justify-center">
       <div
         className=" text-white text-4xl"
-        style={{ textAlign: "center", marginTop: "6rem" }}
+        style={{ textAlign: "center", marginTop: "8rem" }}
       >
         <div>Password Generator</div>
-        <div style={{ fontSize: "1.5rem", color: "#0275ff" }}>
-          (Powered by NextJs)
-        </div>
+        {/* <div style={{ fontSize: "1.2rem", color: "#0275ff" }}>
+          (Powered by NextJs and Tailwind-CSS)
+        </div> */}
         <div
           className="bg-gradient-to-b from-gray-700 to-black"
           style={{
@@ -52,7 +55,7 @@ export default function Land() {
             width: "45vw",
             marginTop: "5rem",
             fontSize: "1rem",
-            boxShadow: "0px 6px 16px 0px #0275ff",
+            boxShadow: "0px 6px 40px 0px #0275ff",
           }}
         >
           <input
@@ -61,6 +64,7 @@ export default function Land() {
             className="outline-none px-3 m-5 bg-black text-white"
             placeholder="Password"
             readOnly
+            ref={passRef}
             style={{ borderRadius: "8px", width: "35vw" }}
           />
           <button
@@ -111,14 +115,14 @@ export default function Land() {
                 }}
               />
               <label htmlFor="length" style={{ fontSize: "" }}>
-                Characters
+                Special characters
               </label>
             </div>
           </div>
         </div>
         {notification && (
           <div
-            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-gray-700 to-black text-white px-4 py-2 rounded shadow-lg"
+            className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-gray-700 to-black text-white px-4 py-2 rounded shadow-lg"
             style={{
               border: "1px solid #0275ff",
               borderRadius: "8px",
